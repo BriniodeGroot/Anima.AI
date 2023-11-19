@@ -16,7 +16,7 @@ from sklearn.metrics import accuracy_score
 
 #we import the data from the different folders and store them according to their label
 
-CATEGORIES = ['n02085620-Chihuahua', 'n02085782-Japanese_spaniel', 'n02085936-Maltese_dog']
+CATEGORIES = ['n02099601-golden_retriever', 'n02109961-Eskimo_dog', 'n02085936-Maltese_dog']
 
 img_height = 375
 img_width = 500
@@ -25,7 +25,7 @@ data = []
 images = []
 labels = []
 
-data_dir = r'C:\Users\Admin\OneDrive\Documenten\UCLL\bach 3 sem 1\ai applications\AnimaI\cnn tutorial\images\Images'
+data_dir = r'C:\Users\Admin\OneDrive\Documenten\UCLL\bach 3 sem 1\ai applications\AnimaI\cnn\images\Images'
 
 def create_data():
     for i in range(len(CATEGORIES)):
@@ -84,6 +84,8 @@ model = Sequential([
   layers.Dense(3, activation = 'softmax')
 ])
 
+model.summary()
+
 #opt = keras.optimizers.Adam(learning_rate=0.00001)
 model.compile(optimizer='adam',
               loss=tf.keras.losses.SparseCategoricalCrossentropy(),
@@ -119,12 +121,25 @@ for i in range(0,len(predicted)):
 
 #We check the accuracy metrics
 print(accuracy_score(y_test, predictedlabels))
-#print(recall_score(y_test, predictedlabels))
-#print(f1_score(y_test, predictedlabels))
+print(recall_score(y_test, predictedlabels, average='weighted'))
+print(f1_score(y_test, predictedlabels, average='weighted'))
 
+# show an example 
 
 print(predicted[1])
 print(y_test[1])
 print(CATEGORIES[y_test[1]])
 plt.imshow(X_test[1])
 plt.show()
+
+# plot an graph of the accuracy in function of the epoch
+
+plt.plot(history.history['accuracy'], label='accuracy')
+plt.plot(history.history['val_accuracy'], label = 'val_accuracy')
+plt.xlabel('Epoch')
+plt.ylabel('Accuracy')
+plt.ylim([0.5, 1])
+plt.legend(loc='lower right')
+plt.show
+
+test_loss, test_acc = model.evaluate(X_test,  y_test, verbose=2)

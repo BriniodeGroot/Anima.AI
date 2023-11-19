@@ -4,6 +4,7 @@
 
 * dataset: https://www.kaggle.com/datasets/jessicali9530/stanford-dogs-dataset/data
 * dataset source: http://vision.stanford.edu/aditya86/ImageNetDogs/
+* dataset met leeftijden categorieën: https://www.kaggle.com/competitions/petfinder-adoption-prediction/data
 * cnn tutorial: https://www.tensorflow.org/tutorials/images/cnn
 
 ## algemene verduidelijkingen
