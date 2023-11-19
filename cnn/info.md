@@ -8,4 +8,4 @@
 
 ## algemene verduidelijkingen
 
-De split_test_train_data.py gaat al de afbeeldingen onderscheiden in train en test data. cnn.py is van de tutorial die ik had doorgestuurd. cnn_chatGPT.py is een cnn model voor dogsbreed. app.py is de toepassing van het cnn model.
+De cnn is de python script voor het trainen en testen van de cnn. Zorg dat je elke lijn snapt, er staat wat commentaar bij. Als het model goed is, kunnen we dit opslaan en gebruiken in de webapp.

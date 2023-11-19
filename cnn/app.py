@@ -1,10 +1,10 @@
 import tensorflow as tf
-from tensorflow.keras.preprocessing import image
-from tensorflow.keras.models import load_model
+from keras.preprocessing import image
+from keras.models import load_model
 import numpy as np
 
 # Load the trained model
-model = load_model('dog_breeds_model.h5')
+model = load_model('cnn_model')
 
 def predict_dog_breed(img_path):
     # Load and preprocess the image
