@@ -1,30 +1,31 @@
+from flask import Flask, request, jsonify, render_template # flask is a web app framework written in python
+import numpy as np
+from PIL import Image
+import io
 import tensorflow as tf
 from keras.preprocessing import image
 from keras.models import load_model
-import numpy as np
 
-# Load the trained model
+app = Flask(__name__)
+
+# load cnn model
 model = load_model('cnn_model')
 
-def predict_dog_breed(img_path):
-    # Load and preprocess the image
-    img = image.load_img(img_path, target_size=(150, 150))
-    img_array = image.img_to_array(img)
-    img_array = np.expand_dims(img_array, axis=0)
-    img_array /= 255.0
+@app.route('/')
+def index():
+    return render_template('index.html')
 
-    # Make a prediction
-    predictions = model.predict(img_array)
+@app.route('/predict', methods=['POST'])
+def predict():
+    if 'file' not in request.files:
+        return 'No file uploaded', 400
 
-    # Assuming you have a list of class names corresponding to the indices
-    class_names = ['breed1', 'breed2', 'breed3', ...]  # Replace with actual breed names
+    file = request.files['file']
+    if file:
+        image = Image.open(io.BytesIO(file.read()))
 
-    # Find the index of the class with the highest probability
-    predicted_class = class_names[np.argmax(predictions)]
+        predicted = model.predict(X_test)
+        return jsonify(breed=prediction)
 
-    return predicted_class
-
-# Example usage
-img_path = 'path/to/your/dog/photo.jpg'  # Replace with the path to your image
-breed = predict_dog_breed(img_path)
-print(f"The predicted breed is: {breed}")
+if __name__ == '__main__':
+    app.run(debug=True)

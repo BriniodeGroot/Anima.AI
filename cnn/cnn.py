@@ -16,7 +16,8 @@ from sklearn.metrics import accuracy_score
 
 #we import the data from the different folders and store them according to their label
 
-CATEGORIES = ['n02099601-golden_retriever', 'n02109961-Eskimo_dog', 'n02085936-Maltese_dog']
+#CATEGORIES_EXT = ['Border_collie', 'Chihuahua', 'Maltese_dog', 'Eskimo_dog', 'French_bulldog', 'Golden_retriever', 'Irish_terrier', 'Norwich_terrier',  'Norfolk_terrier', 'Rottweiler']
+CATEGORIES = ['Maltese_dog', 'Eskimo_dog','Golden_retriever']
 
 img_height = 375
 img_width = 500
@@ -110,7 +111,7 @@ history = model.fit(
 
 ######################################################
 
-#model.save('cnn_model')
+model.save('cnn_model')
 
 predicted = model.predict(X_test)
 
