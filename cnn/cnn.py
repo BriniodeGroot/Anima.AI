@@ -26,7 +26,7 @@ data = []
 images = []
 labels = []
 
-data_dir = r'C:\Users\Admin\OneDrive\Documenten\UCLL\bach 3 sem 1\ai applications\AnimaI\cnn\images\Images'
+data_dir = r'.\images\Images'
 
 def create_data():
     for i in range(len(CATEGORIES)):

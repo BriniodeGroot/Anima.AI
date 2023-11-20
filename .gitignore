@@ -5,3 +5,4 @@ keras_env
 cnn_model
 cnn_model_ages
 rando_forest.joblib
+properties.py
