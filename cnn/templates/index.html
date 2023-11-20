@@ -31,7 +31,7 @@
             })
             .then(response => response.json())
             .then(data => {
-                document.getElementById('prediction-result').innerText = 'The breed of the dog is: ' + data.breed;
+                document.getElementById('prediction-result').innerText = 'The breed of the dog is: ' + data.breed + ' and the age category: ' + data.age;
             })
             .catch(error => console.error('Error:', error));
         });

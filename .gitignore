@@ -1,3 +1,6 @@
 images
+images_ages
+images_ages_cropped
 keras_env
 cnn_model
+cnn_model_ages

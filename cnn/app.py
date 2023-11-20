@@ -14,9 +14,11 @@ img_height = 375
 img_width = 500
 
 CATEGORIES = ['Maltese dog','Chihuahua','Japanese spaniel']
+AGES = ['young','adult','senior']
 
 # load cnn model
 model = load_model('cnn_model')
+model_ages = load_model('cnn_model_ages')
 
 def preprocess_image(image):
     img_array = np.array(image)
@@ -50,6 +52,9 @@ def predict():
     # Adding the batch dimension
     processed_image = np.expand_dims(processed_image, axis=0)  # Shape becomes (1, 375, 500, 3)
 
+    ##############################################################
+    #prediction of breed
+
     predicted = model.predict(processed_image)
     label = np.argmax(predicted[0])
 
@@ -59,7 +64,21 @@ def predict():
 
     dog_breed = CATEGORIES[label]
 
-    return jsonify(breed=dog_breed)
+    ##############################################################
+    #prediction of age category
+
+    predicted_ages = model_ages.predict(processed_image)
+    label_ages = np.argmax(predicted_ages[0])
+
+    print(predicted_ages)
+    print(label_ages)
+    print(AGES[label_ages])
+
+    dog_age = AGES[label_ages]
+
+    #############################################################
+
+    return jsonify(breed=dog_breed, age=dog_age)
 
 if __name__ == '__main__':
     app.run(debug=True)
