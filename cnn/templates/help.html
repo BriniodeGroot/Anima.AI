@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Help page</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/style.css') }}">
+</head>
+<body>
+    <main>
+        <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Dog Breed Recognition Logo" class="logo">
+        <h1>Welcome to the help page</h1>
+        <div class="centered_container">
+            <a href="/"><button class="single_button">Go back to the home page</button></a>
+        </div>
+    </main>
+</body>
+</html>

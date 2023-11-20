@@ -32,6 +32,10 @@ def preprocess_image(image):
 def index():
     return render_template('index.html')
 
+@app.route('/help.html')
+def outcome():
+    return render_template('help.html')
+
 @app.route('/predict', methods=['POST'])
 def predict():
     if 'file' not in request.files:
