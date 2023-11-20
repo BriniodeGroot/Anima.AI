@@ -10,3 +10,5 @@
 ## algemene verduidelijkingen
 
 De cnn is de python script voor het trainen en testen van de cnn. Zorg dat je elke lijn snapt, er staat wat commentaar bij. In app.py vindt men het python script dat het model inlaadt en een voorspelling doet op de afbeelding. De index.html is het html bestand waar men een foto kan uploaden en de voorspelling te zien krijgt. Dit werkt met ```flask run```. Dat is een python web framework, dat men dan ook runt in de environment.
+
+Kies zelf welke honden je wil herkennen, je kan voor alles kiezen maar vraagt meer tijd van je pc.
