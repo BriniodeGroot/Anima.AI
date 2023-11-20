@@ -17,7 +17,7 @@ from sklearn.metrics import accuracy_score
 #we import the data from the different folders and store them according to their label
 
 #CATEGORIES_EXT = ['Border_collie', 'Chihuahua', 'Maltese_dog', 'Eskimo_dog', 'French_bulldog', 'Golden_retriever', 'Irish_terrier', 'Norwich_terrier',  'Norfolk_terrier', 'Rottweiler']
-CATEGORIES = ['Maltese_dog', 'Eskimo_dog','Golden_retriever']
+CATEGORIES = ['Maltese_dog','Chihuahua','Japanese_spaniel']
 
 img_height = 375
 img_width = 500
@@ -95,7 +95,7 @@ model.compile(optimizer='adam',
 #######################################################
 
 epochs= 10
-batch_size = 16
+batch_size = 32
 
 #We train the model 
 

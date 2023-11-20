@@ -6,29 +6,26 @@ import tensorflow as tf
 from keras.preprocessing import image
 from keras.models import load_model
 import cv2
+import matplotlib.pyplot as plt
 
 app = Flask(__name__)
 
 img_height = 375
 img_width = 500
 
-CATEGORIES = ['Maltese_dog', 'Eskimo_dog','Golden_retriever']
+CATEGORIES = ['Maltese dog','Chihuahua','Japanese spaniel']
 
 # load cnn model
 model = load_model('cnn_model')
 
 def preprocess_image(image):
-    # Resize the image
-    image = image.resize((500, 375))  # Width x Height
+    img_array = np.array(image)
+    img_rgb = cv2.cvtColor(img_array, cv2.COLOR_BGR2RGB)
+    img_reshape = cv2.resize(img_rgb, (img_width, img_height))
 
-    # Convert the image to a NumPy array
-    image_array = np.array(image)
-
-    # Normalize or scale the pixel values if necessary
-    # For example, if your model expects pixel values in [0, 1]
-    image_array = image_array / 255.0
-
-    return image_array
+    #image_array = img_reshape / 255.0
+    
+    return img_reshape
 
 
 @app.route('/')
@@ -50,15 +47,13 @@ def predict():
     processed_image = np.expand_dims(processed_image, axis=0)  # Shape becomes (1, 375, 500, 3)
 
     predicted = model.predict(processed_image)
-    predictedlabels = []
-    for i in range(0,len(predicted)):
-        label = np.argmax(predicted[i])
-        predictedlabels.append(label)
-    print(predicted)
-    print(predictedlabels)
-    print(CATEGORIES[predictedlabels[0]])
+    label = np.argmax(predicted[0])
 
-    dog_breed = CATEGORIES[predictedlabels[0]]
+    print(predicted)
+    print(label)
+    print(CATEGORIES[label])
+
+    dog_breed = CATEGORIES[label]
 
     return jsonify(breed=dog_breed)
 

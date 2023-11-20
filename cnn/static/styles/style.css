@@ -36,6 +36,13 @@ h1 {
     margin-bottom: 30px;
 }
 
+h2 {
+    color: #333;
+    font-size: 18px;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
 form {
     display: flex;
     flex-direction: column;
@@ -51,15 +58,15 @@ input[type="file"] {
 input[type="submit"] {
     padding: 12px 20px;
     border: none;
-    border-radius: 4px;
-    background-color: #4CAF50;
+    border-radius: 12px;
+    background-color: #498f5e;
     color: white;
     cursor: pointer;
     transition: background-color 0.2s;
 }
 
 input[type="submit"]:hover {
-    background-color: #45a049;
+    background-color: #22422c;
 }
 
 #prediction-result {
@@ -67,6 +74,14 @@ input[type="submit"]:hover {
     font-size: 1em;
     text-align: center;
 }
+
+.logo {
+    display: block;
+    max-width: 100%; /* Makes image responsive */
+    height: 150px;
+    margin: 0 auto 20px; /* Centers the image and adds space below */
+}
+
 
 /* Responsive design */
 @media (max-width: 600px) {
