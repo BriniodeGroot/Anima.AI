@@ -9,32 +9,11 @@
         <a href="/help.html" class="help-button">?</a>
         <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Dog Breed Recognition Logo" class="logo">
         <h1>Welcome to Anima.AI</h1>
-        <h2>Upload a photo of a dog to predict its breed</h2>
-        <form id="upload-form">
-            <input type="file" id="file-input" name="file" accept="image/*">
-            <input type="submit" value="Predict Breed">
-        </form>
-        <p id="prediction-result"></p>
+        <h2>Choose!</h2>
+        <div class="button_container">
+            <a href="/dog_breed.html"><button class="single_button">Predict the breed</button></a>
+            <a href="/dog_sound.html"><button class="single_button">Analyse the sound of a dog</button></a>
+        </div>
     </main>
-    
-    <script>
-        document.getElementById('upload-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const formData = new FormData();
-            const fileInput = document.getElementById('file-input');
-            formData.append('file', fileInput.files[0]);
-
-            fetch('/predict', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('prediction-result').innerText = 'The breed of the dog is: ' + data.breed + ' and the age category: ' + data.age;
-            })
-            .catch(error => console.error('Error:', error));
-        });
-    </script>
 </body>
 </html>

@@ -39,7 +39,7 @@ h1 {
 h2 {
     color: #333;
     font-size: 18px;
-    text-align: left;
+    text-align: center;
     margin-bottom: 20px;
 }
 
@@ -110,6 +110,36 @@ input[type="submit"]:hover, button:hover {
     background-color: #1f1f1f;
 }
 
+.close-button {
+    position: fixed; /* or 'absolute' if within a positioned container */
+    top: 10px;
+    left: 10px;
+    background-color: #d60000;
+    color: white;
+    padding: 10px;
+    border-radius: 50%; /* Circular shape */
+    text-decoration: none; /* Removes underline from link */
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+    line-height: 20px; /* Adjust as needed */
+    cursor: pointer;
+}
+
+.close-button:hover {
+    background-color: #4e0000;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center; /* Center buttons horizontally */
+    align-items: center; /* Center buttons vertically */
+}
+
+.button-container button {
+    flex: 1; /* Each button will take equal space */
+    margin: 5px; /* Space between buttons */
+}
 
 
 /* Responsive design */

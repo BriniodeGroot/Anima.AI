@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dog Breed Recognition</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/style.css') }}">
+</head>
+<body>
+    <main>
+        <a href="/help.html" class="help-button">?</a>
+        <a href="/" class="close-button">X</a>
+        <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Dog Breed Recognition Logo" class="logo">
+        <h1>Welcome to the Anima.AI sound predictor!</h1>
+        <h2>Upload an audio file in .wav format of a dog to predict its emotion/situation</h2>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept=".wav">
+            <input type="submit" value="Classify Sound">
+        </form>
+        <p id="prediction-result"></p>
+    </main>
+    
+    <script>
+        document.getElementById('upload-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData();
+            const fileInput = document.getElementById('file-input');
+            formData.append('file', fileInput.files[0]);
+
+            fetch('/predict_sound', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('prediction-result').innerText = 'The emotion/situation of the dog is: ' + data.sound;
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
