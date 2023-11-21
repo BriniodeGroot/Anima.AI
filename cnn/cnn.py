@@ -17,7 +17,7 @@ from sklearn.metrics import accuracy_score
 #we import the data from the different folders and store them according to their label
 
 #CATEGORIES_EXT = ['Border_collie', 'Chihuahua', 'Maltese_dog', 'Eskimo_dog', 'French_bulldog', 'Golden_retriever', 'Irish_terrier', 'Norwich_terrier',  'Norfolk_terrier', 'Rottweiler']
-CATEGORIES = ['Maltese_dog','Chihuahua','Japanese_spaniel']
+CATEGORIES = ['Maltese_dog','Eskimo_dog','Rottweiler']
 
 img_height = 375
 img_width = 500

@@ -5,6 +5,8 @@
 * dataset: https://www.kaggle.com/datasets/jessicali9530/stanford-dogs-dataset/data
 * dataset source: http://vision.stanford.edu/aditya86/ImageNetDogs/
 * dataset met leeftijden categorieën: https://www.kaggle.com/competitions/petfinder-adoption-prediction/data
+* dataset met geluiden van honden in verschillende scenario's: https://drive.google.com/drive/folders/1OGSTJEPEYiWBsKTquPRth1H_ul6HKH9G -> Bark, Yip, Howl, Bow-wow, Growling, Whimper (dog)
+* dataset uitleg over hondengeluiden: https://research.google.com/audioset///////ontology/dog_1.html
 * cnn tutorial: https://www.tensorflow.org/tutorials/images/cnn
 
 ## algemene verduidelijkingen
