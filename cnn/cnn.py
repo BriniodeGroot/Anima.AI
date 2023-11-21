@@ -7,9 +7,10 @@ import tensorflow as tf
 from tensorflow import keras
 from keras import layers
 from keras.models import Sequential #AI library, most used for CNN
-from sklearn.metrics import recall_score
-from sklearn.metrics import f1_score
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import recall_score, f1_score, accuracy_score, confusion_matrix
+import seaborn as sns
+import numpy as np
+
 
 #os.system('cmd /c ".\keras_env\Scripts\activate"')
 
@@ -26,7 +27,7 @@ data = []
 images = []
 labels = []
 
-data_dir = r'.\images\Images'
+data_dir = r'C:\school\3de_jaar\ai_applications\AnimaI\cnn\images\images\Images'
 
 def create_data():
     for i in range(len(CATEGORIES)):
@@ -125,13 +126,24 @@ print(accuracy_score(y_test, predictedlabels))
 print(recall_score(y_test, predictedlabels, average='weighted'))
 print(f1_score(y_test, predictedlabels, average='weighted'))
 
-# show an example 
+#confusion matrix
+cm = confusion_matrix(y_test, predictedlabels)
 
-print(predicted[1])
-print(y_test[1])
-print(CATEGORIES[y_test[1]])
-plt.imshow(X_test[1])
+#plot confusion matrix
+plt.figure(figsize=(6, 4))
+sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=CATEGORIES, yticklabels=CATEGORIES)
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.title("Confusion matrix")
 plt.show()
+
+# # show an example 
+
+# print(predicted[1])
+# print(y_test[1])
+# print(CATEGORIES[y_test[1]])
+# plt.imshow(X_test[1])
+# plt.show()
 
 # plot an graph of the accuracy in function of the epoch
 
