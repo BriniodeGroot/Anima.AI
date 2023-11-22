@@ -10,7 +10,7 @@ body, button, input {
 }
 
 body {
-    background-color: #f0f2f5;
+    background-color: #c4c5c8;
     color: #333;
     line-height: 1.6;
     display: flex;
@@ -24,7 +24,7 @@ main {
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    padding: 25px;
+    padding: 45px;
     width: 100%;
     max-width: 500px;
 }
@@ -75,8 +75,19 @@ input[type="submit"]:hover, button:hover {
     text-align: center;
 }
 
+.single_button {
+    padding: 12px 20px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 12px;
+    background-color: #498f5e;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
 .centered_container {
-    margin-bottom: 0;
+    margin-bottom: 20 px;
     position: absolute;
     left: 50%;
     -ms-transform: translate(-50%, -50%);
@@ -139,6 +150,14 @@ input[type="submit"]:hover, button:hover {
 .button-container button {
     flex: 1; /* Each button will take equal space */
     margin: 5px; /* Space between buttons */
+}
+
+#intro_text {
+    text-align: center;
+}
+
+#extra_info { 
+    margin-top: 20px;
 }
 
 
