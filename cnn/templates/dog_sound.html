@@ -11,19 +11,19 @@
         <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Dog Breed Recognition Logo" class="logo">
         <h1>Welcome to the Anima.AI sound predictor!</h1>
         <h2>Upload an audio file in .wav format of a dog to predict its emotion/situation</h2>
-        <form action="/upload" method="post" enctype="multipart/form-data">
-            <input type="file" name="file" accept=".wav">
+        <form id="upload-form-sound">
+            <input type="file" name="file" id="file-input-sound" accept=".wav">
             <input type="submit" value="Classify Sound">
         </form>
         <p id="prediction-result"></p>
     </main>
     
     <script>
-        document.getElementById('upload-form').addEventListener('submit', function(e) {
+        document.getElementById('upload-form-sound').addEventListener('submit', function(e) {
             e.preventDefault();
 
             const formData = new FormData();
-            const fileInput = document.getElementById('file-input');
+            const fileInput = document.getElementById('file-input-sound');
             formData.append('file', fileInput.files[0]);
 
             fetch('/predict_sound', {

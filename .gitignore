@@ -10,3 +10,4 @@ cnn_model_ages
 cnn_model_sounds_dogs
 rando_forest.joblib
 properties.py
+__pycache__

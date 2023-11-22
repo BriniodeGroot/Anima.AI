@@ -117,8 +117,8 @@ def predict_sound():
 
     file = request.files['file']
     if file:
-        audio = wave.open(io.BytesIO(file.read()), 'rb')
-    processed_audio = preprocess_image(audio)
+        audio = io.BytesIO(file.read())
+    processed_audio = preprocess_audio(audio)
 
     # Adding the batch dimension
     processed_audio = np.expand_dims(processed_audio, axis=0)  # Shape becomes (1, 375, 500, 3)
@@ -126,7 +126,7 @@ def predict_sound():
     ##############################################################
     #prediction of breed
 
-    predicted = model.predict(processed_audio)
+    predicted = model_sound.predict(processed_audio)
     label = np.argmax(predicted[0])
 
     print(predicted)
