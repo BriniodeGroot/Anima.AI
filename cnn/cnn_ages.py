@@ -25,7 +25,7 @@ data = []
 images = []
 labels = []
 
-data_dir = r'.\images\Images'
+data_dir = r'.\images_ages_cropped'
 
 def create_data():
     for i in range(len(AGES)):
