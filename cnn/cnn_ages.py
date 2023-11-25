@@ -25,7 +25,7 @@ data = []
 images = []
 labels = []
 
-data_dir = r'C:\school\3de_jaar\ai_applications\AnimaI\cnn\Dog_age\PetFinder_All'
+data_dir = r'C:\Users\Admin\OneDrive\Documenten\UCLL\bach 3 sem 1\ai applications\AnimaI\cnn\images_ages_cropped'
 
 def create_data():
     for i in range(len(AGES)):
@@ -133,6 +133,8 @@ sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=AGES, yticklabels
 plt.xlabel("Predicted")
 plt.ylabel("Actual")
 plt.title("Confusion matrix")
+save_path = './confusion_matrix/ages.png'
+plt.savefig(save_path)
 plt.show()
 
 
@@ -145,12 +147,12 @@ plt.show()
 
 # plot an graph of the accuracy in function of the epoch
 
-plt.plot(history.history['accuracy'], label='accuracy')
-plt.plot(history.history['val_accuracy'], label = 'val_accuracy')
-plt.xlabel('Epoch')
-plt.ylabel('Accuracy')
-plt.ylim([0.5, 1])
-plt.legend(loc='lower right')
-plt.show
+# plt.plot(history.history['accuracy'], label='accuracy')
+# plt.plot(history.history['val_accuracy'], label = 'val_accuracy')
+# plt.xlabel('Epoch')
+# plt.ylabel('Accuracy')
+# plt.ylim([0.5, 1])
+# plt.legend(loc='lower right')
+# plt.show
 
 test_loss, test_acc = model.evaluate(X_test,  y_test, verbose=2)
