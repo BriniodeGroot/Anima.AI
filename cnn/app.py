@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, render_template # flask is a web app 
 import numpy as np
 from PIL import Image
 import io
+import os
 import wave
 import tensorflow as tf
 from keras.preprocessing import image
@@ -41,12 +42,18 @@ def preprocess_audio(audio):
     y, sr = librosa.load(audio)
     S = librosa.feature.melspectrogram(y=y, sr=sr, n_mels=128, fmax=8000)
     log_S = librosa.power_to_db(S, ref=np.max)
-    img_audio = np.array(log_S)
+    plt.figure(figsize=(3, 3))
+    librosa.display.specshow(log_S, sr=sr, x_axis='time', y_axis='mel')
+    plt.axis('off')  # no axis
+    save_path = './predict_images/test.png'
+    plt.savefig(save_path)
+    plt.close()
+    img_audio = cv2.imread(save_path)
     img_audio_rgb = cv2.cvtColor(img_audio, cv2.COLOR_BGR2RGB)
     img_audio_reshape = cv2.resize(img_audio_rgb, (img_width_sound, img_height_sound))
-    # plt.figure(figsize=(3, 3))
-    # librosa.display.specshow(log_S, sr=sr, x_axis='time', y_axis='mel')
-    # plt.axis('off')  # no axis
+    plt.imshow(img_audio_reshape)
+    plt.show()
+    os.remove(save_path)
     # plt.close()
 
     return img_audio_reshape
@@ -116,9 +123,9 @@ def predict_sound():
         return 'No file uploaded', 400
 
     file = request.files['file']
-    if file:
-        audio = io.BytesIO(file.read())
-    processed_audio = preprocess_audio(audio)
+    # if file:
+    #     audio = io.BytesIO(file.read())
+    processed_audio = preprocess_audio(file)
 
     # Adding the batch dimension
     processed_audio = np.expand_dims(processed_audio, axis=0)  # Shape becomes (1, 375, 500, 3)

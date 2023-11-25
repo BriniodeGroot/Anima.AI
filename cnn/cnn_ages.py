@@ -7,9 +7,9 @@ import tensorflow as tf
 from tensorflow import keras
 from keras import layers
 from keras.models import Sequential #AI library, most used for CNN
-from sklearn.metrics import recall_score
-from sklearn.metrics import f1_score
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import recall_score, f1_score, accuracy_score, confusion_matrix
+import seaborn as sns
+import numpy as np
 
 #os.system('cmd /c ".\keras_env\Scripts\activate"')
 
@@ -25,7 +25,7 @@ data = []
 images = []
 labels = []
 
-data_dir = r'.\images\Images'
+data_dir = r'C:\Users\Admin\OneDrive\Documenten\UCLL\bach 3 sem 1\ai applications\AnimaI\cnn\images_ages_cropped'
 
 def create_data():
     for i in range(len(AGES)):
@@ -124,22 +124,35 @@ print(accuracy_score(y_test, predictedlabels))
 print(recall_score(y_test, predictedlabels, average='weighted'))
 print(f1_score(y_test, predictedlabels, average='weighted'))
 
-# show an example 
+#condusion matrix
+cm = confusion_matrix(y_test, predictedlabels)
 
-print(predicted[1])
-print(y_test[1])
-print(AGES[y_test[1]])
-plt.imshow(X_test[1])
+#plot confusion matrix
+plt.figure(figsize=(6, 4))
+sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=AGES, yticklabels=AGES)
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.title("Confusion matrix")
+save_path = './confusion_matrix/ages.png'
+plt.savefig(save_path)
 plt.show()
+
+
+# show an example 
+# print(predicted[1])
+# print(y_test[1])
+# print(AGES[y_test[1]])
+# plt.imshow(X_test[1])
+# plt.show()
 
 # plot an graph of the accuracy in function of the epoch
 
-plt.plot(history.history['accuracy'], label='accuracy')
-plt.plot(history.history['val_accuracy'], label = 'val_accuracy')
-plt.xlabel('Epoch')
-plt.ylabel('Accuracy')
-plt.ylim([0.5, 1])
-plt.legend(loc='lower right')
-plt.show
+# plt.plot(history.history['accuracy'], label='accuracy')
+# plt.plot(history.history['val_accuracy'], label = 'val_accuracy')
+# plt.xlabel('Epoch')
+# plt.ylabel('Accuracy')
+# plt.ylim([0.5, 1])
+# plt.legend(loc='lower right')
+# plt.show
 
 test_loss, test_acc = model.evaluate(X_test,  y_test, verbose=2)

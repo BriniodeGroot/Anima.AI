@@ -48,7 +48,7 @@ data, images, labels = create_data()
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test  = train_test_split(images, labels, test_size=0.2, random_state=1)
 
-#We convert the spectograms so that we can use that in the random forest
+#We convert the photos so that we can use that in the random forest
 
 def makematrix(data):
         numImages = len(data)

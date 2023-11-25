@@ -7,6 +7,8 @@ import numpy as np #mathematical library
 source_directory = 'sounds'
 target_directory = 'soundss_dogs_img'
 
+# function to convert audio to spectrogram
+
 def audio_to_spectrogram(file_path, save_path):
     y, sr = librosa.load(file_path)
     S = librosa.feature.melspectrogram(y=y, sr=sr, n_mels=128, fmax=8000)

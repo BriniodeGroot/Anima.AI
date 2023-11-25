@@ -15,3 +15,5 @@ cnn_model_sounds_dogs
 rando_forest.joblib
 properties.py
 __pycache__
+dog_sounds
+Dog_age
