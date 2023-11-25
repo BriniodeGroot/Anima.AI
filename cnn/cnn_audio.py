@@ -27,7 +27,7 @@ data = []
 images = []
 labels = []
 
-data_dir = r'.\sounds_dogs_img'
+data_dir = r'C:\school\3de_jaar\ai_applications\AnimaI\cnn\dog_sounds'
 
 def create_data():
     for i in range(len(CATEGORIES)):
