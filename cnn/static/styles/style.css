@@ -75,6 +75,25 @@ input[type="submit"]:hover, button:hover {
     text-align: center;
 }
 
+#checkBox-error {
+    margin-top: 20px;
+    font-size: 1em;
+    text-align: center;
+    color: red;
+}
+
+#checkBox-form {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+#myCheckbox {
+    margin-right: 10px;
+}
+
 .single_button {
     padding: 12px 20px;
     margin-top: 20px;

@@ -15,26 +15,43 @@
             <input type="file" id="file-input" name="file" accept="image/*">
             <input type="submit" value="Predict Breed">
         </form>
+        <form id="checkBox-form">
+            <input type="checkbox" id="myCheckbox" name="myCheckbox">
+            <label for="myCheckbox">Give consent to use the image for data processing.</label>
+        </form>
         <p id="prediction-result"></p>
+        <p id="checkBox-error"></p>
     </main>
     
     <script>
         document.getElementById('upload-form').addEventListener('submit', function(e) {
-            e.preventDefault();
+            var checkBox = document.getElementById("myCheckbox");
+            var isChecked = checkBox.checked;
+            if (isChecked == true){
+                e.preventDefault();
+                document.getElementById('checkBox-error').innerText = '';
+                
 
-            const formData = new FormData();
-            const fileInput = document.getElementById('file-input');
-            formData.append('file', fileInput.files[0]);
+                const formData = new FormData();
+                const fileInput = document.getElementById('file-input');
+                formData.append('file', fileInput.files[0]);
 
-            fetch('/predict_breed', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('prediction-result').innerText = 'The breed of the dog is: ' + data.breed + ' and the age category: ' + data.age;
-            })
-            .catch(error => console.error('Error:', error));
+                fetch('/predict_breed', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('prediction-result').innerText = 'The breed of the dog is: ' + data.breed + ' and the age category: ' + data.age;
+                })
+                .catch(error => console.error('Error:', error));
+            }
+
+            else{
+                e.preventDefault();
+                document.getElementById('prediction-result').innerText = '';
+                document.getElementById('checkBox-error').innerText = 'Please check the checkbox';
+            }  
         });
     </script>
 </body>
