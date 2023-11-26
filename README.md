@@ -20,6 +20,7 @@ To effectively run and interact with the application, follow these steps:
 
 3. **Model Training:**
 
+* Download all the datasets and adjust the path to your own correct directory.
 * Before launching the application, execute the training scripts for the CNN models. This step is crucial as it prepares the models to accurately analyze and classify the data (images and audio) uploaded by users.
 * Ensure that the trained models are saved on your local system for the application to use.
 
