@@ -10,7 +10,6 @@ from keras.models import Sequential #AI library, most used for CNN
 from sklearn.metrics import recall_score, f1_score, accuracy_score, confusion_matrix
 import seaborn as sns
 import numpy as np
-
 #os.system('cmd /c ".\keras_env\Scripts\activate"')
 
 
@@ -25,14 +24,18 @@ data = []
 images = []
 labels = []
 
-data_dir = r'C:\Users\Admin\OneDrive\Documenten\UCLL\bach 3 sem 1\ai applications\AnimaI\cnn\images_ages_cropped'
+data_dir = r'images_small'
 
 def create_data():
     for i in range(len(AGES)):
         category = AGES[i]
         path = os.path.join(data_dir, category)
         for img in os.listdir(path):
-            img_array = cv2.imread(os.path.join(path,img))
+            img_array = cv2.imread(os.path.join(path, img))
+            if img_array is None:
+                print(f"Failed to read image: {os.path.join(path, img)}")
+                continue
+
             img_rgb = cv2.cvtColor(img_array, cv2.COLOR_BGR2RGB) #if you use an image, it is in the bgr format, so we need to convert it to rgb
             img_reshape = cv2.resize(img_rgb, (img_width, img_height))
             data.append([img_reshape, i])
@@ -73,7 +76,7 @@ print(y_val)
 
 model = Sequential([
   layers.Rescaling(1./255, input_shape=(img_height, img_width, 3)),
-  layers.Conv2D(32, 3, padding='valid', activation='relu'), 
+  layers.Conv2D(32, 3, padding='valid', activation='relu'),
   layers.MaxPooling2D(), #2x2 kernel size
   layers.Conv2D(64, 3, padding='valid', activation='relu'),
   layers.MaxPooling2D(),
@@ -86,14 +89,14 @@ model = Sequential([
 
 model.summary()
 
-#opt = keras.optimizers.Adam(learning_rate=0.00001)
+opt = keras.optimizers.legacy.Adam(learning_rate=0.000001)
 model.compile(optimizer='adam',
               loss=tf.keras.losses.SparseCategoricalCrossentropy(),
               metrics=['accuracy'])
 
 #######################################################
 
-epochs= 10
+epochs= 5
 batch_size = 32
 
 #We train the model 
@@ -133,7 +136,7 @@ sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=AGES, yticklabels
 plt.xlabel("Predicted")
 plt.ylabel("Actual")
 plt.title("Confusion matrix")
-save_path = './confusion_matrix/ages.png'
+save_path = 'confusion_matrix/ages.png'
 plt.savefig(save_path)
 plt.show()
 
