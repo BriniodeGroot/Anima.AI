@@ -23,6 +23,8 @@ To effectively run and interact with the application, follow these steps:
 * Before launching the application, execute the training scripts for the CNN models. This step is crucial as it prepares the models to accurately analyze and classify the data (images and audio) uploaded by users.
 * Ensure that the trained models are saved on your local system for the application to use.
 
+or use our pretrained models (expires on 27-12-2023): https://filesender.belnet.be/?s=download&token=6314f5c6-898f-448a-ad59-a31978994302
+
 4. **Running the Flask Application:**
 
 * With the models trained and saved, you can now run the web application using Flask. Start the Flask server to host the application locally.
