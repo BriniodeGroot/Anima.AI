@@ -101,7 +101,7 @@ history = best_model.fit(
 
 ######################################################
 
-# best_model.save('cnn_model_ages')
+best_model.save('cnn_model_ages')
 predicted = best_model.predict(X_test)
 
 predictedlabels = []
