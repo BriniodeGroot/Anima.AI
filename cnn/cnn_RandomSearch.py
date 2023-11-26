@@ -1,113 +1,112 @@
 import os
 import cv2
+import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.model_selection import train_test_split
 import tensorflow as tf
 from tensorflow import keras
-from keras import layers, Sequential
-from keras.preprocessing.image import ImageDataGenerator
+from keras import layers
+from keras.models import Sequential
 from sklearn.metrics import recall_score, f1_score, accuracy_score, confusion_matrix
 import seaborn as sns
-from keras_tuner.tuners import RandomSearch
-from keras.callbacks import EarlyStopping
-import matplotlib.pyplot as plt
+from kerastuner.tuners import RandomSearch
 
-# Define categories and image dimensions
+# os.system('cmd /c ".\keras_env\Scripts\activate"')
+
+
+# we import the data from the different folders and store them according to their label
+
+# CATEGORIES_EXT = ['Border_collie', 'Chihuahua', 'Maltese_dog', 'Eskimo_dog', 'French_bulldog', 'Golden_retriever', 'Irish_terrier', 'Norwich_terrier',  'Norfolk_terrier', 'Rottweiler']
 CATEGORIES = ['Maltese_dog', 'Eskimo_dog', 'Rottweiler']
+
 img_height = 375
 img_width = 500
+
+data = []
+images = []
+labels = []
+
 data_dir = r'images'
 
-# Function to create data
+
 def create_data():
-    data = []
-    images = []
-    labels = []
     for i in range(len(CATEGORIES)):
         category = CATEGORIES[i]
         path = os.path.join(data_dir, category)
         for img in os.listdir(path):
-            try:
-                img_array = cv2.imread(os.path.join(path, img))
-                img_rgb = cv2.cvtColor(img_array, cv2.COLOR_BGR2RGB)
-                img_reshape = cv2.resize(img_rgb, (img_width, img_height))
-                images.append(img_reshape)
-                labels.append(i)
-            except Exception as e:
-                print(e)
-    return np.array(images), np.array(labels)
+            img_array = cv2.imread(os.path.join(path, img))
+            img_rgb = cv2.cvtColor(img_array, cv2.COLOR_BGR2RGB)
+            img_reshape = cv2.resize(img_rgb, (img_width, img_height))
+            data.append([img_reshape, i])
+            images.append(img_reshape)
+            labels.append(i)
+    return data, images, labels
 
-# Create data
-images, labels = create_data()
 
-# Split data
+data, images, labels = create_data()
+
 X_train, X_testval, y_train, y_testval = train_test_split(images, labels, test_size=0.2, random_state=1)
 X_val, X_test, y_val, y_test = train_test_split(X_testval, y_testval, test_size=0.5, random_state=1)
+X_train = np.array(X_train)
+X_test = np.array(X_test)
+X_val = np.array(X_val)
+y_train = np.array(y_train)
+y_test = np.array(y_test)
+y_val = np.array(y_val)
 
-# Data Augmentation
-data_augmentation = keras.Sequential([
-    layers.RandomFlip("horizontal"),
-    layers.RandomRotation(0.1),
-    layers.RandomZoom(0.1),
-])
 
-# Model builder function
 def build_model(hp):
     model = Sequential([
         layers.Rescaling(1. / 255, input_shape=(img_height, img_width, 3)),
-        layers.Conv2D(hp.Int('conv_1_units', min_value=16, max_value=256, step=32), 3, padding='valid', activation='relu'),
+        layers.Conv2D(hp.Int('conv_1_units', min_value=32, max_value=128, step=16), 3, padding='valid',
+                      activation='relu'),
         layers.MaxPooling2D(),
-        layers.Conv2D(hp.Int('conv_2_units', min_value=16, max_value=256, step=32), 3, padding='valid', activation='relu'),
+        layers.Conv2D(hp.Int('conv_2_units', min_value=64, max_value=256, step=32), 3, padding='valid',
+                      activation='relu'),
         layers.MaxPooling2D(),
-        layers.Conv2D(hp.Int('conv_3_units', min_value=16, max_value=256, step=32), 3, padding='valid', activation='relu'),
+        layers.Conv2D(hp.Int('conv_3_units', min_value=64, max_value=256, step=32), 3, padding='valid',
+                      activation='relu'),
         layers.Flatten(),
-        layers.Dropout(hp.Float('dropout_1', min_value=0.2, max_value=0.5, default=0.25, step=0.05)),
-        layers.Dense(hp.Int('dense_1_units', min_value=16, max_value=128, step=16), activation='relu'),
-        layers.Dropout(hp.Float('dropout_2', min_value=0.2, max_value=0.5, default=0.25, step=0.05)),
-        layers.Dense(3, activation='softmax')  # Output layer for 3 categories
+        layers.Dense(hp.Int('dense_1_units', min_value=64, max_value=128,  ), activation='relu'),
+        layers.Dense(hp.Int('dense_2_units', min_value=32, max_value=128, step=16), activation='relu'),
+        layers.Dense(3, activation='softmax')
     ])
 
-    model.compile(optimizer=keras.optimizers.Adam(hp.Choice('learning_rate', values=[1e-2, 1e-3, 1e-4])),
+    model.compile(optimizer=keras.optimizers.legacy.Adam(hp.Choice('learning_rate', values=[1e-2, 1e-3, 1e-4])),
                   loss=tf.keras.losses.SparseCategoricalCrossentropy(),
                   metrics=['accuracy'])
+
     return model
 
-# Tuner configuration
+
 tuner = RandomSearch(
     build_model,
     objective='val_accuracy',
     max_trials=5,
     executions_per_trial=3,
     directory='random_search',
-    project_name='cnn_model'
-)
+    project_name='cnn_model')
 
-# Early Stopping
-early_stopping = EarlyStopping(monitor='val_loss', patience=10)
+tuner.search_space_summary()
 
-# Train generator with data augmentation
-train_datagen = ImageDataGenerator(preprocessing_function=data_augmentation)
-train_generator = train_datagen.flow(X_train, y_train, batch_size=32)
+tuner.search(X_train, y_train, epochs=10, validation_data=(X_val, y_val))
 
-# Start the search
-tuner.search(train_generator, epochs=1, validation_data=(X_val, y_val), callbacks=[early_stopping])
-
-# Get the best model
 best_model = tuner.get_best_models(num_models=1)[0]
 
-# Save the best model
 best_model.save('cnn_model')
 
-# Model evaluation on test data
 predicted = best_model.predict(X_test)
-predicted_labels = np.argmax(predicted, axis=1)
 
-# Calculate metrics
-print("Accuracy:", accuracy_score(y_test, predicted_labels))
-print("Recall:", recall_score(y_test, predicted_labels, average='weighted'))
-print("F1 Score:", f1_score(y_test, predicted_labels, average='weighted'))
+predictedlabels = []
+for i in range(0, len(predicted)):
+    label = np.argmax(predicted[i])
+    predictedlabels.append(label)
 
-cm = confusion_matrix(y_test, predicted_labels)
+print(accuracy_score(y_test, predictedlabels))
+print(recall_score(y_test, predictedlabels, average='weighted'))
+print(f1_score(y_test, predictedlabels, average='weighted'))
+
+cm = confusion_matrix(y_test, predictedlabels)
 
 # # plot confusion matrix
 # plt.figure(figsize=(6, 4))
@@ -135,5 +134,4 @@ cm = confusion_matrix(y_test, predicted_labels)
 # plt.legend(loc='lower right')
 # plt.show
 
-# Model evaluation
 test_loss, test_acc = best_model.evaluate(X_test, y_test, verbose=2)

@@ -45,8 +45,8 @@ def create_data():
 
 data, images, labels = create_data()
 
-X_train, X_testval, y_train, y_testval = train_test_split(images, labels, test_size=0.2, random_state=1)
-X_val, X_test, y_val, y_test = train_test_split(X_testval, y_testval, test_size=0.5, random_state=1)
+X_train, X_testval, y_train, y_testval  = train_test_split(images, labels, test_size=0.2, random_state=1)
+X_val, X_test, y_val, y_test  = train_test_split(X_testval, y_testval, test_size=0.5, random_state=1)
 X_train = np.array(X_train)
 X_test = np.array(X_test)
 X_val = np.array(X_val)
@@ -54,47 +54,54 @@ y_train = np.array(y_train)
 y_test = np.array(y_test)
 y_val = np.array(y_val)
 
+print(y_val)
 
-def build_model(hp):
-    model = Sequential([
-        layers.Rescaling(1. / 255, input_shape=(img_height, img_width, 3)),
-        layers.Conv2D(hp.Int('conv_1_units', min_value=32, max_value=128, step=16), 3, padding='valid',
-                      activation='relu'),
-        layers.MaxPooling2D(),
-        layers.Conv2D(hp.Int('conv_2_units', min_value=64, max_value=256, step=32), 3, padding='valid',
-                      activation='relu'),
-        layers.MaxPooling2D(),
-        layers.Conv2D(hp.Int('conv_3_units', min_value=64, max_value=256, step=32), 3, padding='valid',
-                      activation='relu'),
-        layers.Flatten(),
-        layers.Dense(hp.Int('dense_1_units', min_value=64, max_value=128, step=32), activation='relu'),
-        layers.Dense(hp.Int('dense_2_units', min_value=32, max_value=128, step=16), activation='relu'),
-        layers.Dense(3, activation='softmax')
-    ])
+#################################################
 
-    model.compile(optimizer=keras.optimizers.legacy.Adam(hp.Choice('learning_rate', values=[1e-2, 1e-3, 1e-4])),
-                  loss=tf.keras.losses.SparseCategoricalCrossentropy(),
-                  metrics=['accuracy'])
+#We build a CNN with SELU activation functions.
 
-    return model
+best_model = Sequential([
+  layers.Rescaling(1./255, input_shape=(img_height, img_width, 3)),
+  layers.Conv2D(64, 3, padding='valid', activation='relu'),
+  layers.MaxPooling2D(), #2x2 kernel size
+  layers.Conv2D(256, 3, padding='valid', activation='relu'),
+  layers.MaxPooling2D(),
+  layers.Conv2D(160, 3, padding='valid', activation='relu'),
+  layers.Flatten(),
+  layers.Dropout(0.5),
+  layers.Dense(128, activation='relu'),
+  layers.Dense(96, activation='relu'),
+  layers.Dropout(0.5),
+  layers.Dense(3, activation = 'softmax')
+])
 
+best_model.summary()
 
-tuner = RandomSearch(
-    build_model,
-    objective='val_accuracy',
-    max_trials=5,
-    executions_per_trial=3,
-    directory='random_search',
-    project_name='cnn_model')
+opt = keras.optimizers.legacy.Adam(learning_rate=0.00001)
+best_model.compile(optimizer='adam',
+              loss=tf.keras.losses.SparseCategoricalCrossentropy(),
+              metrics=['accuracy'])
 
-tuner.search_space_summary()
+#######################################################
 
-tuner.search(X_train, y_train, epochs=10, validation_data=(X_val, y_val))
+epochs= 5
+batch_size = 32
 
-best_model = tuner.get_best_models(num_models=1)[0]
+#We train the model
 
-best_model.save('cnn_model')
+history = best_model.fit(
+  X_train,
+  y_train,
+  validation_data=(X_val, y_val),
+  epochs=epochs,
+  batch_size = batch_size,
+  verbose = True,
+  #callbacks = callback
+)
 
+######################################################
+
+# best_model.save('cnn_model_ages')
 predicted = best_model.predict(X_test)
 
 predictedlabels = []
@@ -108,21 +115,23 @@ print(f1_score(y_test, predictedlabels, average='weighted'))
 
 cm = confusion_matrix(y_test, predictedlabels)
 
-# # plot confusion matrix
-# plt.figure(figsize=(6, 4))
-# sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=CATEGORIES, yticklabels=CATEGORIES)
-# plt.xlabel("Predicted")
-# plt.ylabel("Actual")
-# plt.title("Confusion matrix")
-# plt.show()
+# plot confusion matrix
+plt.figure(figsize=(6, 4))
+sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=CATEGORIES, yticklabels=CATEGORIES)
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.title("Confusion matrix")
+save_path = 'confusion_matrix/breed.png'
+plt.savefig(save_path)
+plt.show()
 
 # # show an example
 
-# print(predicted[1])
-# print(y_test[1])
-# print(CATEGORIES[y_test[1]])
-# plt.imshow(X_test[1])
-# plt.show()
+print(predicted[1])
+print(y_test[1])
+print(CATEGORIES[y_test[1]])
+plt.imshow(X_test[1])
+plt.show()
 
 # plot an graph of the accuracy in function of the epoch
 

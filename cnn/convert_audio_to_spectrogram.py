@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np #mathematical library
 
 source_directory = 'sounds'
-target_directory = 'soundss_dogs_img'
+target_directory = 'sounds_dogs_img'
 
 # function to convert audio to spectrogram
 

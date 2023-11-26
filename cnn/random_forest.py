@@ -24,7 +24,7 @@ data = []
 images = []
 labels = []
 
-data_dir = r'.\images\Images'
+data_dir = r'images'
 
 def create_data():
     for i in range(len(CATEGORIES)):
