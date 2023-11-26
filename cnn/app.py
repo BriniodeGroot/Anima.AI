@@ -52,7 +52,7 @@ def preprocess_audio(audio):
     img_audio_rgb = cv2.cvtColor(img_audio, cv2.COLOR_BGR2RGB)
     img_audio_reshape = cv2.resize(img_audio_rgb, (img_width_sound, img_height_sound))
     plt.imshow(img_audio_reshape)
-    plt.show()
+    # plt.show()
     os.remove(save_path)
     # plt.close()
 

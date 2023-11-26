@@ -175,6 +175,11 @@ input[type="submit"]:hover, button:hover {
     text-align: center;
 }
 
+#help_text {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
 #extra_info { 
     margin-top: 20px;
 }

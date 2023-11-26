@@ -11,7 +11,7 @@ keras_env
 new_python_env
 cnn_model
 cnn_model_ages
-cnn_model_sounds_dogs
+cnn_model_sound_dogs
 rando_forest.joblib
 properties.py
 __pycache__

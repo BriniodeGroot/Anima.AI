@@ -15,4 +15,4 @@ De cnn is de python script voor het trainen en testen van de cnn. Zorg dat je el
 
 Kies zelf welke honden je wil herkennen, je kan voor alles kiezen maar vraagt meer tijd van je pc.
 
-Het gokken van de leeftijdscategorie werkt. Een extra is geluiden van honden herkennen, dat wekrt ook.
+Het gokken van de leeftijdscategorie werkt. Een extra is geluiden van honden herkennen, dat werkt ook.
