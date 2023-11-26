@@ -27,7 +27,7 @@ SOUNDS = ['Bark','Bow-wow','Growling','Howl','Whimper','Yip']
 # load cnn model
 model = load_model('cnn_model')
 model_ages = load_model('cnn_model_ages')
-model_sound = load_model('cnn_model_sounds_dogs')
+model_sound = load_model('cnn_model_sound_dogs')
 
 def preprocess_image(image):
     img_array = np.array(image)
