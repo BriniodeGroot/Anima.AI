@@ -15,34 +15,49 @@
             <input type="file" name="file" id="file-input-sound" accept=".wav">
             <input type="submit" value="Classify Sound">
         </form>
+        <form id="checkBox-form">
+            <input type="checkbox" id="myCheckbox" name="myCheckbox">
+            <label for="myCheckbox">Give consent to use the audio file for data processing.</label>
+        </form>
         <p id="prediction-result"></p>
         <p id="extra_info"></p>
+        <p id="checkBox-error"></p>
     </main>
     
     <script>
         document.getElementById('upload-form-sound').addEventListener('submit', function(e) {
-            e.preventDefault();
+            var checkBox = document.getElementById("myCheckbox");
+            var isChecked = checkBox.checked;
+            if (isChecked == true){
+                e.preventDefault();
+                document.getElementById('checkBox-error').innerText = '';
 
-            const extra_info = document.getElementById('extra_info');
+                const extra_info = document.getElementById('extra_info');
 
-            const sounds = ['Bark','Bow-wow','Growling','Howl','Whimper','Yip']
-            const info = ['Bark: Principal communication sound produced by dogs. Often transliterated as woof, especially for large dogs.', 'Bow-wow: Dog communication sound that is more tonal and less abrupt than a classic bark.', 'Growling: A low, guttural vocalization produced by animals as a warning, a sign of aggression, or to express anger.', 'Howl: The long plaintive cry of a dog, wolf, or other canidae.', 'Whimper: Muted dog vocalization indicating submission, fear, or pain.', 'Yip: A sharp high-pitched bark or cry, typically from a miniature dog.']
+                const sounds = ['Bark','Bow-wow','Growling','Howl','Whimper','Yip']
+                const info = ['Bark: Principal communication sound produced by dogs. Often transliterated as woof, especially for large dogs.', 'Bow-wow: Dog communication sound that is more tonal and less abrupt than a classic bark.', 'Growling: A low, guttural vocalization produced by animals as a warning, a sign of aggression, or to express anger.', 'Howl: The long plaintive cry of a dog, wolf, or other canidae.', 'Whimper: Muted dog vocalization indicating submission, fear, or pain.', 'Yip: A sharp high-pitched bark or cry, typically from a miniature dog.']
 
-            const formData = new FormData();
-            const fileInput = document.getElementById('file-input-sound');
-            formData.append('file', fileInput.files[0]);
+                const formData = new FormData();
+                const fileInput = document.getElementById('file-input-sound');
+                formData.append('file', fileInput.files[0]);
 
-            fetch('/predict_sound', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('prediction-result').innerText = 'The emotion/situation of the dog is: ' + data.sound;
-                let label = sounds.indexOf(data.sound);
-                document.getElementById('extra_info').innerText = info[label];
-            })
-            .catch(error => console.error('Error:', error));
+                fetch('/predict_sound', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('prediction-result').innerText = 'The emotion/situation of the dog is: ' + data.sound;
+                    let label = sounds.indexOf(data.sound);
+                    document.getElementById('extra_info').innerText = info[label];
+                })
+                .catch(error => console.error('Error:', error));
+            } 
+            else{
+                e.preventDefault();
+                document.getElementById('prediction-result').innerText = '';
+                document.getElementById('checkBox-error').innerText = 'Please check the checkbox';
+            }
         });
     </script>
 </body>
